@@ -1,4 +1,4 @@
-func 0 b c = ( (-1) * c / b, (-1) * c / b)
+func 0 b c = ( -c / b, -c / b)
 
 
 func a b c  | d < 0 = error "no real roots"
