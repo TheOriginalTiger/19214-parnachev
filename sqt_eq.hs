@@ -1,5 +1,5 @@
 func 0 b c = ( -c / b, -c / b)
-
+func 0 0 c = error "no roots for const"
 
 func a b c  | d < 0 = error "no real roots"
             | otherwise = (x1, x2) 
