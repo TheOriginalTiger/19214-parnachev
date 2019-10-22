@@ -67,12 +67,12 @@ mysplit n xs = (left n xs, right n xs) where -- also could use mytake & mydrop b
                 left n (l:ls) = l: left (n-1) ls --everywhere!
                 right 0 rs = rs --hooray!
                 right k (r:rs) = right (k-1) rs --I love it
-splitAt' :: Integer -> [a] -> ([a], [a])
+--splitAt' :: Integer -> [a] -> ([a], [a])
 
 
-splitAt' n xs = ()
+--splitAt' n xs = ()
 
-
+    
 --13
 mynull :: [a]->Bool
 mynull [] = True
@@ -99,3 +99,13 @@ myzip [] [] = []
 myzip [] ys = error "lists are not equal"
 myzip xs [] = error "lists are not equal"
 myzip (x:xs) (y:ys) = (x,y):myzip xs ys
+
+--18
+myfoldl :: (a->b->b)->b->[a]->b
+myfoldl f acc [] = acc
+myfoldl f acc (x:xs) = myfoldl f (f x acc) xs
+
+--19
+myfoldr :: (a->b->b)->b->[a]->b
+myfoldr f acc [] = acc
+myfoldr f acc (x:xs) = x `f` myfoldr f acc xs
