@@ -7,10 +7,10 @@ charToInt x | ord x > 47 && ord x < 58 = ord x - 48
             | ord x > 64 && ord x < 91 = ord x - 29
             | otherwise = error "incorrect letter"
 
-toDecimal ::  Int -> String ->Int
+toDecimal ::  Int -> String ->String
 toDecimal snumber [] = error "number is empty :c"
-toDecimal 1 base  = foldr (\xs x -> x + 1) 0 base - 1 -- dunno whether its better to do charToInt right in mult  
-toDecimal base snumber = mult (foldr (\ys y ->y + 1) 0 snumber - 1) ( map charToInt snumber ) base
+toDecimal 1 base  = show $ foldr (\xs x -> x + 1) 0 base - 1 -- dunno whether its better to do charToInt right in mult  
+toDecimal base snumber = show $ mult (foldr (\ys y ->y + 1) 0 snumber - 1) ( map charToInt snumber ) base
                             where
                                 mult n [] num = 0
                                 mult n (x:xs) num | base < 0 || base > 61 || x >= base = error "wrong input"
@@ -34,4 +34,4 @@ fromDecimal toBase snumber = reverse $ divide (foldl (\x y -> x*10 + y) 0 (map c
                                                           | otherwise = intToChar (num `mod` toBase) : divide (num `div` toBase) toBase snumber
 
 convertFromTo :: Int->Int->String->String
-convertFromTo fromBase toBase snumber = fromDecimal toBase $ show $ toDecimal fromBase snumber
+convertFromTo fromBase toBase snumber = fromDecimal toBase $ toDecimal fromBase snumber
