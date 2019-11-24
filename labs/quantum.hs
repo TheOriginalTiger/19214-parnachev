@@ -13,6 +13,15 @@ instance (Num a, Show a, Ord a, Eq a) => Eq (Complex a) where
 instance (Num a, Show a, Ord a, Eq a) => Ord (Complex a) where
     compare (ToComplex real1 im1) (ToComplex real2 im2) = compare (real1*real1 + im1*im1) (real2*real2 + im2*im2)  
 
+instance (Num a, Show a, Ord a, Eq a) => Num (Complex a) where
+    (+) (ToComplex real1 im1) (ToComplex real2 im2) = ToComplex (real1 + real2) (im1 + im2)
+    (*) (ToComplex real1 im1) (ToComplex real2 im2) = ToComplex (real1*real2 - im1 * im2) (real1*real2 + im1 * im2)
+    abs (ToComplex real im) = ToComplex (abs real) (abs im)
+    negate (ToComplex real im) = ToComplex (negate real) (negate im)
+    fromInteger int  = ToComplex 0 0
+    signum (ToComplex 0 im) = 0
+    signum (ToComplex real im) = ToComplex (signum real) 0 -- actually csgn
+
 
 data QuantumState a = ToQuantumState a String
 
@@ -46,3 +55,11 @@ toPairList q =[(complex, str) | (ToQuantumState complex str) <-q ]
 fromPairList :: [(Complex a,String)] -> Qubit (Complex a)
 fromPairList pairs = [ (ToQuantumState complex str) | (complex, str) <- pairs]
 
+scalar :: (Num a) => Complex a->Complex a->Complex a
+scalar (ToComplex r1 im1) (ToComplex r2 im2) = ToComplex (r1*r2 - im1*im2) (r1*r2 + im1*im2)
+
+scalarProduct:: (Num a, Show a, Ord a, Eq a) => Qubit (Complex a) ->Qubit (Complex a) ->a
+scalarProduct q1 q2 = foldr (\c r -> c + r) 0 [r1*r2 + i1*i2 | (ToQuantumState (ToComplex r1 i1) _) <- q1, (ToQuantumState (ToComplex r2 i2) _) <- q2]
+
+entagle:: (Num a, Show a, Ord a, Eq a) => Qubit (Complex a) ->Qubit (Complex a) ->Qubit (Complex a)
+entagle q1 q2 = [ ToQuantumState (c1 * c1) (str1 ++ str2)| (ToQuantumState c1 str1)<-q1 , (ToQuantumState c2 str2) <- q1]
