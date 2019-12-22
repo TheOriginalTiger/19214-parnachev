@@ -20,7 +20,7 @@ instance (Num a, Show a, Ord a, Eq a, Floating a) => Num (Complex a) where
     (*) (ToComplex real1 im1) (ToComplex real2 im2) = ToComplex (real1*real2 - im1 * im2) (real1*real2 + im1 * im2)
     abs (ToComplex real im) = ToComplex (sqrt $ real * real + im * im) 0
     negate (ToComplex real im) = ToComplex real (negate im)
-    fromInteger int  = ToComplex 0 0
+    fromInteger int  = ToComplex (fromInteger int) 0  
     signum (ToComplex 0 im) = 0
     signum (ToComplex real im) = ToComplex (signum real) 0 -- actually csgn
 
