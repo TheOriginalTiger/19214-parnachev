@@ -70,12 +70,13 @@ size (ToHashTable _ _ _ e) = e
 empty::(Show k, Eq k)=>HashTable k v -> Bool;
 empty(ToHashTable _ _ _ e ) = e > 0
 
-{-
+
+mmap :: [String]->[(Int, Int)]
+mmap list = [ (read $ head l, read $ last l)  | l <-( map words list)] 
+
 main :: IO()
 main = withFile "input.txt" ReadMode (\h-> do
-                                            filelines <- hGetContents h >>= lines
-                                            let x = defaultHashTable
-                                            --let data = [(head xs, last xs), xs<-content]
-                                            print content                                           
+                                            filelines <- hGetContents h >>= return . mmap . lines
+                                            let y = fromList filelines
+                                            print y                                           
   )
--}
